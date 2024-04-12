@@ -200,6 +200,9 @@ class logmanager extends eqLogic {
 						$cmd_html .= '<br/>';
 						$br_before = 1;
 					}
+					if ($cmd->getLogicalId() == 'clear') {
+						$replace['#clear_id#'] = $cmd->getId();
+					}
 				}
 				$replace['#cmd#'] = $cmd_html;
 				break;
@@ -218,6 +221,13 @@ class logmanager extends eqLogic {
 			}
 			if (++$linesDisplayed == $maxLines) break;
 		}
+		$search = array();              $replaceLog = array();
+		$search[] = '[DEBUG]';          $replaceLog[] = '<span class="label label-xs label-success">&nbsp;D<&>EBUG&nbsp;</span>';
+		$search[] = '[INFO]';           $replaceLog[] = '<span class="label label-xs label-info">&nbsp;I<&>NFO&nbsp;</span>';
+		$search[] = '[WARNING]';        $replaceLog[] = '<span class="label label-xs label-warning">W<&>ARNING</span>';
+		$search[] = '[ERROR]';          $replaceLog[] = '<span class="label label-xs label-danger">&nbsp;E<&>RROR&nbsp;</span>';
+		$content = str_replace($search, $replaceLog, $content);
+		$content = str_replace('<&>', '', $content);
 		$replace['#logContent#'] = $content;
 
 		return template_replace($replace, getTemplate('core', $version, 'logmanager', __CLASS__));
