@@ -15,8 +15,8 @@
 		<span class="reportModeVisible">#name_display# <span class="object_name">#object_name#</span></span>
 		<a href="#eqLink#" class="reportModeHidden">#name_display# <span class="object_name">#object_name#</span></a>
 	</div>
-	<div id="pre_globallog" style="font-size:0.95em; line-height:1.1em; padding:3px 0 0 5px; margin:0;height:100% !important;position:relative">
-		<p class="state" style="height:calc(100% - 26px); overflow-y:scroll;">#logContent#</p>
+	<div style="height: 100%;">
+		<pre id="pre_globallog" class="state" style="height: calc(100% - 26px) !important; background-color: rgba(var(--eq-bg-color), var(--opacity)) !important; padding: unset;">#logContent#</pre>
 	</div>
 	<script>
 		if ('#panelLink#' == '') {
