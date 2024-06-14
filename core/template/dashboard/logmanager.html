@@ -14,7 +14,7 @@
 	</div>
 	<div #log_style#>
 		<pre id="pre_globallog" class="state"
-			style="height: calc(100% - 26px) !important; background-color: rgba(var(--eq-bg-color), var(--opacity)) !important; padding: unset; text-align:left;">#logContent#</pre>
+			style="height: calc(100% - 28px) !important; background-color: rgba(var(--eq-bg-color), var(--opacity)) !important; padding: unset; text-align:left;">#logContent#</pre>
 	</div>
 	<div class="cmds #isVerticalAlign#">
 		#cmd#
@@ -22,6 +22,9 @@
 	<script>
 		if ('#panelLink#' == '') {
 			document.querySelector('.eqLogic[data-eqLogic_uid="#uid#"] .panelLink')?.remove()
+		}
+		if ('#topToBottom#' == 1) {
+			document.getElementById("pre_globallog").scrollTop = document.getElementById("pre_globallog").scrollHeight;
 		}
 	</script>
 </div>

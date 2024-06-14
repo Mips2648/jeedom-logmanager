@@ -169,6 +169,7 @@ class logmanager extends eqLogic {
 
 			if ($topToBottom) {
 				$content = $line . '<br/>' . $content;
+				$replace['#topToBottom#'] = $topToBottom;
 			} else {
 				$content .= $line . '<br/>';
 			}
@@ -179,7 +180,7 @@ class logmanager extends eqLogic {
 		$search[] = '[DEBUG]';
 		$replaceLog[] = '<span class="label label-xs label-success">&nbsp;DEBUG&nbsp;</span>';
 		$search[] = '[INFO]';
-		$replaceLog[] = '<span class="label label-xs label-info">&nbsp;INFO&nbsp;&nbsp;</span>';
+		$replaceLog[] = '<span class="label label-xs label-info">&nbsp;INFO&nbsp;</span>';
 		$search[] = '[WARNING]';
 		$replaceLog[] = '<span class="label label-xs label-warning">WARNING</span>';
 		$search[] = '[ERROR]';
