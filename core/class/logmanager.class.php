@@ -178,17 +178,32 @@ class logmanager extends eqLogic {
 
 		$content = '';
 		$maxLines = $this->getConfiguration('nbrLinesWidget', 1000);
-		$topToBottom = $this->getConfiguration('topToBottom', 0) == 1 ? true : false;
-		$linesDisplayed = 0;
-		foreach (log::get($this->getName(), 0, 3000) as $line) {
-
-			if ($topToBottom) {
-				$content = $line . '<br/>' . $content;
-			} else {
-				$content .= $line . '<br/>';
+		$chronologicalOrder = $this->getConfiguration('topToBottom', 0) == 1 ? true : false;
+		$datePattern = '/^\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\]/';
+		$delta = log::getDelta($this->getName(), 0, '', false, false, 0, $maxLines);
+		$lines = explode("\n", $delta['logText']);
+		unset($lines[count($lines) - 1]);
+		if ($chronologicalOrder) {
+			log::add(__CLASS__, 'debug', "[{$this->getName()}] Display log in chronological order");
+			$content = implode('<br/>', $lines);
+		} else {
+			log::add(__CLASS__, 'debug', 'Display log in reverse chronological order');
+			$block = [];
+			foreach ($lines as $line) {
+				if (preg_match($datePattern, $line)) {
+					if (!empty($block)) {
+						$content = implode('<br/>', $block) . '<br/>' . $content;
+					}
+					$block = [$line];
+				} else {
+					$block[] = $line;
+				}
 			}
-			if (++$linesDisplayed == $maxLines) break;
+			if (!empty($block)) {
+				$content = implode('<br/>', $block) . '<br/>' . $content;
+			}
 		}
+
 		$search = array();
 		$replaceLog = array();
 		$search[] = '[DEBUG]';
