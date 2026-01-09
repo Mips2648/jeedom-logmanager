@@ -183,6 +183,9 @@ class logmanager extends eqLogic {
 		$delta = log::getDelta($this->getName(), 0, '', false, false, 0, $maxLines);
 		$lines = explode("\n", $delta['logText']);
 		unset($lines[count($lines) - 1]);
+		if (count($lines) > $maxLines) {
+			$lines = array_slice($lines, -$maxLines);
+		}
 		if ($chronologicalOrder) {
 			log::add(__CLASS__, 'debug', "[{$this->getName()}] Display log in chronological order");
 			$content = implode('<br/>', $lines);
