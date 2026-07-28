@@ -50,12 +50,11 @@ class logmanager extends eqLogic {
 	);
 
 	private function throwExceptionIfInvalidLogname() {
-		try {
-			plugin::byId($this->getName());
-		} catch (\Throwable $th) {
-			return;
+		$alternativeName = explode('_', $this->getName(), 2)[0];
+
+		if (plugin::isInstalled($this->getName()) || plugin::isInstalled($alternativeName)) {
+			throw new Exception("Le nom de l'équipement choisi ({$this->getName()}) n'est pas autorisé car il correspond à un plugin installé sur votre Jeedom.");
 		}
-		throw new Exception("Le nom de l'équipement choisi ({$this->getName()}) n'est pas autorisé car il correspond à un plugin installé sur votre Jeedom.");
 	}
 
 
