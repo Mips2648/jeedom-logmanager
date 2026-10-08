@@ -12,7 +12,10 @@
 	"utilization": "La consultation des logs se fait via l'interface standard de Jeedom. La purge des logs est également gérée par la config générale de Jeedom.",
 	"licence": "AGPL",
 	"author": "Mips",
-	"require": "4.2",
+	"require": "4.5",
+	"os": {
+		"min": 11
+	},
 	"category": "programming",
 	"hasDependency": false,
 	"hasOwnDeamon": false,

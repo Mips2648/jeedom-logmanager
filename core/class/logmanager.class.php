@@ -276,7 +276,7 @@ class logmanagerCmd extends cmd {
 		return true;
 	}
 
-	public function execute($_options = array()) {
+	public function execute($_options = array()): bool {
 		/** @var logmanager */
 		$eqlogic = $this->getEqLogic();
 		$logName = $eqlogic->getName();
@@ -286,28 +286,29 @@ class logmanagerCmd extends cmd {
 				log::add('logmanager', 'debug', "Clear log {$logName}");
 				log::clear($logName);
 				$eqlogic->checkAndRefreshWidget();
-				return;
+				return true;
 			case 'remove':
 				log::add('logmanager', 'debug', "Remove log {$logName}");
 				log::remove($logName);
 				$eqlogic->checkAndRefreshWidget();
-				return;
+				return true;
 		}
 
 		if (!is_array($_options)) {
 			log::add('logmanager', 'error', __('Options invalides', __FILE__));
-			return;
+			return false;
 		}
 		if (!isset($_options['message'])) {
 			log::add('logmanager', 'info', __('Message absent', __FILE__));
-			return;
+			return false;
 		}
 		$message = trim($_options['message']);
 		if ($message == '') {
 			log::add('logmanager', 'info', __('Message vide', __FILE__));
-			return;
+			return false;
 		}
 
 		$eqlogic->addLog($this->getLogicalId(), $message);
+		return true;
 	}
 }
