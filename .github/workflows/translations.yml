@@ -11,13 +11,10 @@ on:
       - 'desktop/**'
       - 'mobile/**'
       - 'plugin_info/**'
+      - '.github/workflows/translations.yml'
 
 jobs:
   auto-translate:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: Mips2648/plugins-translations@v5
-        with:
-          deepl_api_key: ${{ secrets.DEEPL_API_KEY }}
-          target_languages: "en_US,es_ES,de_DE,it_IT,pt_PT"
-          use_core_translations: false
+    uses: Mips2648/.github/.github/workflows/plugin-translate.yml@main
+    secrets:
+      DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
