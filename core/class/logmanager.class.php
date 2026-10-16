@@ -22,14 +22,15 @@ require_once __DIR__  . '/../../../../core/php/core.inc.php';
 class logManagerLevel {
 	public const LOGLEVEL = array(100 => 'debug', 200 => 'info', 300 => 'warning', 400 => 'error');
 
-	public static function all() {
+	public static function all(): array {
 		return self::LOGLEVEL;
 	}
 
-	public static function getId($loglevel) {
+	public static function getId(string $loglevel): int {
 		foreach (self::LOGLEVEL as $key => $value) {
 			if ($value == $loglevel) return $key;
 		}
+		throw new InvalidArgumentException("Invalid log level: {$loglevel}");
 	}
 }
 
@@ -50,12 +51,11 @@ class logmanager extends eqLogic {
 	);
 
 	private function throwExceptionIfInvalidLogname() {
-		try {
-			plugin::byId($this->getName());
-		} catch (\Throwable $th) {
-			return;
+		$alternativeName = explode('_', $this->getName(), 2)[0];
+
+		if (plugin::isInstalled($this->getName()) || plugin::isInstalled($alternativeName)) {
+			throw new Exception("Le nom de l'équipement choisi ({$this->getName()}) n'est pas autorisé car il correspond à un plugin installé sur votre Jeedom.");
 		}
-		throw new Exception("Le nom de l'équipement choisi ({$this->getName()}) n'est pas autorisé car il correspond à un plugin installé sur votre Jeedom.");
 	}
 
 
@@ -248,7 +248,7 @@ class logmanager extends eqLogic {
 		}
 	}
 
-	public function addLog($logLevel, $message) {
+	public function addLog(string $logLevel, string $message): void {
 		$this->throwExceptionIfInvalidLogname();
 
 		$logName = $this->getName();
@@ -277,7 +277,7 @@ class logmanagerCmd extends cmd {
 		return true;
 	}
 
-	public function execute($_options = array()) {
+	public function execute($_options = array()): bool {
 		/** @var logmanager */
 		$eqlogic = $this->getEqLogic();
 		$logName = $eqlogic->getName();
@@ -287,28 +287,29 @@ class logmanagerCmd extends cmd {
 				log::add('logmanager', 'debug', "Clear log {$logName}");
 				log::clear($logName);
 				$eqlogic->checkAndRefreshWidget();
-				return;
+				return true;
 			case 'remove':
 				log::add('logmanager', 'debug', "Remove log {$logName}");
 				log::remove($logName);
 				$eqlogic->checkAndRefreshWidget();
-				return;
+				return true;
 		}
 
 		if (!is_array($_options)) {
 			log::add('logmanager', 'error', __('Options invalides', __FILE__));
-			return;
+			return false;
 		}
 		if (!isset($_options['message'])) {
 			log::add('logmanager', 'info', __('Message absent', __FILE__));
-			return;
+			return false;
 		}
 		$message = trim($_options['message']);
 		if ($message == '') {
 			log::add('logmanager', 'info', __('Message vide', __FILE__));
-			return;
+			return false;
 		}
 
 		$eqlogic->addLog($this->getLogicalId(), $message);
+		return true;
 	}
 }

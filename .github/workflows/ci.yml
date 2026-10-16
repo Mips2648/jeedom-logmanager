@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+    branches: [beta]
+    paths:
+      - '**.php'
+      - composer.json
+      - composer.lock
+      - phpstan.neon
+      - phpstan.neon.dist
+      - .github/workflows/ci.yml
+  pull_request:
+    branches: [beta]
+    paths:
+      - '**.php'
+      - composer.json
+      - composer.lock
+      - phpstan.neon
+      - phpstan.neon.dist
+      - .github/workflows/ci.yml
+
+jobs:
+  ci:
+    uses: Mips2648/.github/.github/workflows/plugin-ci.yml@main

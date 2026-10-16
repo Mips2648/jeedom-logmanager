@@ -1,5 +1,7 @@
 # jeedom-logmanager
 
+[![CI](https://github.com/mips2648/jeedom-logmanager/actions/workflows/ci.yml/badge.svg)](https://github.com/mips2648/jeedom-logmanager/actions/workflows/ci.yml)
+
 Plugin jeedom pour gestion de log
 
 Documentation: <https://mips2648.github.io/jeedom-plugins-docs/logmanager>
