@@ -14,7 +14,7 @@
 	"author": "Mips",
 	"require": "4.5",
 	"os": {
-		"min": 11
+		"min": 12
 	},
 	"category": "programming",
 	"hasDependency": false,

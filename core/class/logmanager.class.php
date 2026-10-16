@@ -22,14 +22,15 @@ require_once __DIR__  . '/../../../../core/php/core.inc.php';
 class logManagerLevel {
 	public const LOGLEVEL = array(100 => 'debug', 200 => 'info', 300 => 'warning', 400 => 'error');
 
-	public static function all() {
+	public static function all(): array {
 		return self::LOGLEVEL;
 	}
 
-	public static function getId($loglevel) {
+	public static function getId(string $loglevel): int {
 		foreach (self::LOGLEVEL as $key => $value) {
 			if ($value == $loglevel) return $key;
 		}
+		throw new InvalidArgumentException("Invalid log level: {$loglevel}");
 	}
 }
 
@@ -247,7 +248,7 @@ class logmanager extends eqLogic {
 		}
 	}
 
-	public function addLog($logLevel, $message) {
+	public function addLog(string $logLevel, string $message): void {
 		$this->throwExceptionIfInvalidLogname();
 
 		$logName = $this->getName();
